@@ -6,10 +6,13 @@ public class Collect : MonoBehaviour {
 
     public bool isStaringAtCollectable;
 
+    private Renderer render;
     private Shader standard, outlined;
+    private GameObject lastSeenGameObject;
 
 	// Use this for initialization
 	void Start () {
+        render = GetComponent<Renderer>();
 		standard = Shader.Find("Standard");
         outlined = Shader.Find("Outlined/Silhouette Only");
 	}
@@ -18,11 +21,15 @@ public class Collect : MonoBehaviour {
 	void Update () {
         RaycastHit hit;
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        var collectable = GameObject.FindWithTag("Collectable").transform;
+        lastSeenGameObject = GameObject.FindWithTag("Collectable");
 
         if (Physics.Raycast (ray, out hit, 10f) && !isStaringAtCollectable) {
-            isStaringAtCollectable = true;
-            // renderer.material.shader = outlined;
+            lastSeenGameObject = hit.transform.gameObject;
+            
+            if (lastSeenGameObject.tag == "Collectable") {
+                isStaringAtCollectable = true;
+                lastSeenGameObject.GetComponent<Renderer>().material.shader = outlined;
+            }
 
             // Debug.DrawRay (ray.origin, hit.point);
             // Debug.Log("Hit! at " + hit.point);
@@ -33,7 +40,7 @@ public class Collect : MonoBehaviour {
             //hit.collider.transform.tag = "select";
         } else {
             isStaringAtCollectable = false;
-            // renderer.material.shader = standard;
+            lastSeenGameObject.GetComponent<Renderer>().material.shader = standard;
         }
 
 
