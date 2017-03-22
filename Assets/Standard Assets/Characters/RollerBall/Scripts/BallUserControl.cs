@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
+using UnitySampleAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Vehicles.Ball
 {
