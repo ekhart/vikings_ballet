@@ -1,20 +1,19 @@
-using System;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-using UnityEngine;
+﻿using UnityEngine;
 
-
-namespace UnityStandardAssets.CrossPlatformInput
+namespace UnitySampleAssets.CrossPlatformInput
 {
-    [ExecuteInEditMode]
-    public class MobileControlRig : MonoBehaviour
-    {
-        // this script enables or disables the child objects of a control rig
-        // depending on whether the USE_MOBILE_INPUT define is declared.
+#if UNITY_EDITOR
+	using UnityEditor;
+	[ExecuteInEditMode]
+#endif
+	public class MobileControlRig : MonoBehaviour
+	{
 
-        // This define is set or unset by a menu item that is included with
-        // the Cross Platform Input package.
+		// this script enables or disables the child objects of a control rig
+		// depending on whether the USE_MOBILE_INPUT define is declared.
+
+		// This define is set or unset by a menu item that is included with
+		// the Cross Platform Input package.
 
 #if !UNITY_EDITOR
 	void OnEnable()
@@ -25,43 +24,42 @@ namespace UnityStandardAssets.CrossPlatformInput
 
 #if UNITY_EDITOR
 
-        private void OnEnable()
-        {
-            EditorUserBuildSettings.activeBuildTargetChanged += Update;
-            EditorApplication.update += Update;
-        }
+		private void OnEnable()
+		{
+			EditorUserBuildSettings.activeBuildTargetChanged += Update;
+			EditorApplication.update += Update;
+		}
 
+		private void OnDisable()
+		{
+			EditorUserBuildSettings.activeBuildTargetChanged -= Update;
+			EditorApplication.update -= Update;
+		}
 
-        private void OnDisable()
-        {
-            EditorUserBuildSettings.activeBuildTargetChanged -= Update;
-            EditorApplication.update -= Update;
-        }
+		private void Update()
+		{
+			CheckEnableControlRig();
 
-
-        private void Update()
-        {
-            CheckEnableControlRig();
-        }
+		}
 #endif
 
-
-        private void CheckEnableControlRig()
-        {
+		private void CheckEnableControlRig()
+		{
 #if MOBILE_INPUT
 		EnableControlRig(true);
 		#else
-            EnableControlRig(false);
+			EnableControlRig(false);
 #endif
-        }
 
+		}
 
-        private void EnableControlRig(bool enabled)
-        {
-            foreach (Transform t in transform)
-            {
-                t.gameObject.SetActive(enabled);
-            }
-        }
-    }
+		private void EnableControlRig(bool enabled)
+		{
+			foreach (Transform t in transform)
+			{
+				t.gameObject.SetActive(enabled);
+			}
+		}
+	}
 }
+
